@@ -1,32 +1,37 @@
 /**
  * This portal's configuration: the only file a fork needs to edit.
- * What each field means: src/config.ts. Generate one with `npm run setup`;
- * check it against the live API with `npm run check`.
+ * What each field means: src/config.ts. Check it against the live API with
+ * `npm run check` (add `-- --verbose` to review lines found by name).
  *
- * This default is a worked example: the Province of Bohol. Its three DPWH
- * district engineering offices bring in every DPWH line listed under them;
- * the place name brings in lines from all four programs whose title names
- * Bohol (Central Office projects, farm-to-market roads, health facilities,
- * irrigation). More examples in examples/.
+ * The Municipality of Bay, Laguna (Region IV-A, Laguna's 2nd legislative
+ * district). A municipality has no DPWH office of its own, so the scope is the
+ * place name: every 2027 line in the four programs (DPWH, farm-to-market roads,
+ * health facilities, irrigation) and every 2020–2026 program whose title names
+ * Bay, Laguna.
+ *
+ * "Bay" alone is a common word ("Manila Bay", "Laguna de Bay", "bayan"), so the
+ * search needs both words, "Bay" and "Laguna", and stays in Region IV-A. That
+ * still catches projects on Laguna de Bay (the lake) in other towns: review
+ * them with `npm run check -- --verbose` and add each namesake to `exclude`
+ * with a reason. Titles that name Bay without "Laguna" are missed this way.
+ *
+ * The Laguna DPWH district engineering office that covers Bay is left out on
+ * purpose: its ledger covers several towns, and every line would show here.
+ * To add it, find its exact name with `npm run setup -- --list-offices` and
+ * put it under `offices`.
  */
 import { defineConfig } from './src/config';
 
 export default defineConfig({
-  id: 'bohol-province',
-  kind: 'province',
-  name: 'Province of Bohol',
-  shortName: 'Bohol',
-  operator: { name: 'BetterGov.ph', url: 'https://bettergov.ph' },
-  // Where this example is deployed. Change it (or remove it) in your fork.
-  siteUrl: 'https://transparency-portal.bettergov.workers.dev',
+  id: 'bay-laguna',
+  kind: 'municipality',
+  name: 'Municipality of Bay, Laguna',
+  shortName: 'Bay',
+  operator: { name: 'Your organisation' },
+  // Set siteUrl to where this portal is deployed, for link previews.
   scope: {
-    offices: [
-      'Bohol 1st District Engineering Office',
-      'Bohol 2nd District Engineering Office',
-      'Bohol 3rd District Engineering Office',
-    ],
-    places: [{ label: 'Bohol', region: 'VII' }],
-    districts: ['leg:bohol:1st', 'leg:bohol:2nd', 'leg:bohol:3rd'],
+    places: [{ label: 'Bay', q: 'Bay Laguna', region: 'IV-A' }],
+    districts: ['leg:laguna:2nd'],
     exclude: [],
   },
   reporting: { enabled: false },
